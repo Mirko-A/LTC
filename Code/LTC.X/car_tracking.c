@@ -3,33 +3,33 @@
 /* LOCAL VARIABLES */
 
 /* Car command data */
-static const uint8_t start_command[START_COMMAND_LEN]  = "START";
-static const uint8_t stop_command[STOP_COMMAND_LEN]    = "STOP";
+static const byte start_command[START_COMMAND_LEN]  = "START";
+static const byte stop_command[STOP_COMMAND_LEN]    = "STOP";
 
 /* Action flags */
 
-static CarState car_state;
+static CarState  car_state;
 static CarAction car_action;
-static boolean safe_to_move;
+static boolean   safe_to_move;
 
 static void processUartRX(void)
 {
 	if(!uartAvailable())
 	{
-		uint8_t entered_word[MAX_UART_LEN] = {0};
+		byte entered_word[MAX_BUFFER_SIZE] = {0};
 		uartReadString(entered_word);
 		
-		if(stringCompare(entered_word,start_command) == TRUE)
+		if(stringCompare(entered_word, (byte*) start_command) == TRUE)
 		{
 			car_state = CAR_ON;
 		}
-		else if(stringCompare(entered_word,stop_command) == TRUE)
+		else if(stringCompare(entered_word, (byte*) stop_command) == TRUE)
 		{
 			car_state = CAR_OFF;
 		}
 		else 
 		{
-			uartWriteString("Wrong command\n");
+			uartWriteString((byte*) "Wrong command\n");
 		}
 			
 	}
@@ -37,16 +37,16 @@ static void processUartRX(void)
 
 static void displayCarState(void)
 {
-    uartWriteString("Car: ");
+    uartWriteString((byte*) "Car: ");
     if (car_state == CAR_ON)
     {
-        uartWriteString("CAR ON \n");
+        uartWriteString((byte*) "CAR ON \n");
     }
     else if (car_state == CAR_OFF)
     {
-        uartWriteString("CAR OFF \n");
+        uartWriteString((byte*) "CAR OFF \n");
     }
-    uartWriteString("\n\r");
+    uartWriteString((byte*) "\n\r");
 }
 
 /* TODO: dovrsiti */
@@ -98,6 +98,7 @@ static void checkInputs(void)
 /* Funkcija koja na osnovu nivoa osvetljenosti vraca polozaj gde je osvetljenost preko kriticne */
 static CarAction getGetCarAction(void)
 {
+    CarAction car_action;
 	EnvLightLevel env_light_level = getEnvLightLevel();
 	
 	/* TODO: porazmisliti o prioritetu */
@@ -121,6 +122,8 @@ static CarAction getGetCarAction(void)
 	{
 		car_action = CAR_IDLE;
 	}
+    
+    return car_action;
 }
 
 /*Funkcija gde pomeramo auto */

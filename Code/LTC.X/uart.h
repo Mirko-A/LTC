@@ -13,23 +13,25 @@ extern "C" {
 #endif
 
 /* STANDARD LIBRARIES */
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
     
 /* CTRL LIBRARIES */
 #include <p30fxxxx.h>
 
+/* USER LIBRARIES */
+#include "utils.h"
+    
 #define MAX_BUFFER_SIZE 64u
 
 /* Prijemni FIFO bafer */
-extern uint8_t rx_buffer[MAX_BUFFER_SIZE];
+extern byte rx_buffer[MAX_BUFFER_SIZE];
 /* Pozicija sa koje ce se procitati sledeci karakter */
-extern volatile uint8_t buffer_first;
+extern volatile byte buffer_first;
 /* Pozicija na koju ce se upisati sledeci karakter */
-extern volatile uint8_t buffer_last;
+extern volatile byte buffer_last;
 /* Trenutni broj karaktera u baferu */
-extern volatile uint8_t buffer_size;    
+extern volatile byte buffer_size;    
     
 /* Funckija inicijalizuje UART kanal */
 void uartInit(void);
@@ -37,22 +39,22 @@ void uartInit(void);
 /* Funckija koja vraca trenutni broj karaktera u FIFO baferu 
    Ako je prazan vraca 0
  */ 
-uint8_t uartAvailable();
+byte uartAvailable();
 
 /* Funckija cisti FIFO bafer */ 
 void uartFlush();
 
 /* Funckija cita jedan karakter iz FIFO bafera */
-uint8_t uartReadChar();
+byte uartReadChar();
 
 /* Funckija cita sve karaktere u FIFO baferu */
-uint8_t uartReadString(uint8_t *str_to_read);
+byte uartReadString(byte *str_to_read);
 
 /* Funckija upisuje jedan karakter u FIFO bafer */
-void uartWriteChar(uint8_t p_char);
+void uartWriteChar(byte p_byte);
 
 /* Funckija upisuje niz karaktera u FIFO bafer */
-void uartWriteString(uint8_t *p_str);
+void uartWriteString(byte *p_str);
 
 /* Funckija upisuje broj u obliku stringa u FIFO bafer */
 void uartWriteNumber(uint16_t num);

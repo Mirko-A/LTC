@@ -8,13 +8,13 @@
 #include "uart.h"
 
 /* Prijemni FIFO bafer */
-uint8_t rx_buffer[MAX_BUFFER_SIZE];
+byte rx_buffer[MAX_BUFFER_SIZE] = { 0 };
 /* Pozicija sa koje ce se procitati sledeci karakter */
-volatile uint8_t buffer_first = 0;
+volatile byte buffer_first = 0;
 /* Pozicija na koju ce se upisati sledeci karakter */
-volatile uint8_t buffer_last  = 0;
+volatile byte buffer_last  = 0;
 /* Trenutni broj karaktera u baferu */
-volatile uint8_t buffer_size  = 0;
+volatile byte buffer_size  = 0;
 
 void uartInit(void)
 {
@@ -31,7 +31,7 @@ void uartInit(void)
     U1STAbits.UTXEN=1; // ukljucujemo predaju
 }
 
-uint8_t uartAvailable()
+byte uartAvailable()
 {
     return buffer_size;
 }
@@ -43,26 +43,26 @@ void uartFlush()
     buffer_last = 0;
 }
 
-uint8_t uartReadChar()
+byte uartReadChar()
 {
-    uint8_t char_to_return;
+    byte byte_to_return;
     
     if (buffer_size == 0)
     { 
         return -1;
     }
     
-    char_to_return = rx_buffer[buffer_first++];
+    byte_to_return = rx_buffer[buffer_first++];
     buffer_first &= MAX_BUFFER_SIZE - 1;
     
     buffer_size--;
     
-    return char_to_return;
+    return byte_to_return;
 }
 
-uint8_t uartReadString(uint8_t *str_to_read)
+byte uartReadString(byte str_to_read[])
 {
-    uint8_t length = 0u;
+    byte length = 0u;
     
     while (buffer_size > 0)
     {
@@ -72,17 +72,17 @@ uint8_t uartReadString(uint8_t *str_to_read)
     return length;
 }
 
-void uartWriteChar(uint8_t p_char)
+void uartWriteChar(byte p_byte)
 {
 	while(!U1STAbits.TRMT);
 
     if(U1MODEbits.PDSEL == 3)
-        U1TXREG = p_char;
+        U1TXREG = p_byte;
     else
-        U1TXREG = p_char & 0xFF;
+        U1TXREG = p_byte & 0xFF;
 }
 
-void uartWriteString(uint8_t *p_str)
+void uartWriteString(byte *p_str)
 {
 	while ((*p_str) != 0)
     {
@@ -93,19 +93,19 @@ void uartWriteString(uint8_t *p_str)
 
 void uartWriteNumber(uint16_t num)
 {
-    uint8_t digits[5] = { 0 };
-    uint8_t len = 0;
+    byte digits[5] = { 0 };
+    byte len = 0;
     
     do
     {
-        digits[len] = (uint8_t) ((num % 10) + '0');
+        digits[len] = (byte) ((num % 10) + '0');
         len = len + 1;
         
         num = num / 10;
     } 
     while (num != 0);
     
-    uint8_t it = 0;
+    byte it = 0;
     
     for ( ; it < len; it++)
     {

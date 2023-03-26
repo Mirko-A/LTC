@@ -6,7 +6,6 @@
  */
 
 /* STANDARD LIBRARIES */
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 

@@ -71,14 +71,6 @@ typedef enum
 
 typedef struct
 {
-    uint16_t  front_light_level;
-    uint16_t  back_light_level;
-    uint16_t  left_light_level;
-    uint16_t  right_light_level;
-} EnvLightLevel;
-
-typedef struct
-{
     uint16_t  front;
     uint16_t  back;
     uint16_t  left;
@@ -103,7 +95,7 @@ typedef struct
  * @param void
  * @return void
  */
-void CarTrackingInit(void);
+void carTrackingInit(void);
 
 /**
  * @brief This function executes core functionalities of the system sequentially. These include: 
