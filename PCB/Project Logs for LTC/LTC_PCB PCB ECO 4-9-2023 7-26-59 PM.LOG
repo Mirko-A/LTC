@@ -1,0 +1,4 @@
+Change Component DesignItemId : Designator=PB Old DesignItemId=Header 13H New DesignItemId=Header 13
+Change Component Footprint: Designator=PB Old Footprint=HDR1X13H New Footprint=HDR1X13
+Change Component Comment : Designator=PB Old Comment=PORT B New Comment=
+Change Component Description : Designator=PB Old Description=Header, 13-Pin, Right Angle New Description=Header, 13-Pin
